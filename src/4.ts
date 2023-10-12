@@ -12,14 +12,19 @@
 
 // Наприклад, ось так:
 
+interface IKey {
+  signature: number;
+}
 class Key {
-  constructor(private signature: number) {
+  private signature: number;
+
+  constructor() {
     this.signature = Math.random();
   }
 }
 
 class Person {
-  constructor(private key) {
+  constructor(private key: IKey) {
     this.key = key;
   }
 
@@ -27,6 +32,14 @@ class Person {
     return this.key;
   }
 }
+
+abstract class House {
+  comeIn() {}
+
+  abstract OpenDoor() {}
+}
+
+class MyHouse extends House {}
 
 const key = new Key();
 
