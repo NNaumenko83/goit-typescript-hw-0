@@ -12,35 +12,59 @@
 
 // Наприклад, ось так:
 
-interface IKey {
-  signature: number;
-}
+// Створюємо клас Key
 class Key {
   private signature: number;
 
   constructor() {
     this.signature = Math.random();
   }
+
+  getSignature() {
+    return this.signature;
+  }
 }
 
+// Створюємо клас Person
 class Person {
-  constructor(private key: IKey) {
+  constructor(private key: Key) {
     this.key = key;
   }
 
-  getKey() {
+  getKey(): Key {
     return this.key;
   }
 }
 
+// Створюємо клас House
 abstract class House {
-  comeIn() {}
+  protected door: boolean = false;
+  protected tenants: Person[] = [];
 
-  abstract OpenDoor() {}
+  constructor(protected key: Key) {}
+
+  public comeIn(person: Person): void {
+    if (!this.door) {
+      throw new Error("Door is close");
+    }
+
+    this.tenants.push(person);
+  }
+
+  abstract openDoor(key: Key): boolean;
 }
 
-class MyHouse extends House {}
+class MyHouse extends House {
+  openDoor(key: Key) {
+    if (key.getSignature() !== this.key.getSignature()) {
+      throw new Error("It's another key");
+    }
 
+    return (this.door = true);
+  }
+}
+
+// Виклик методів
 const key = new Key();
 
 const house = new MyHouse(key);
