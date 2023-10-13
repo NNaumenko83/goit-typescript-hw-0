@@ -15,21 +15,19 @@
 // Створюємо клас Key
 class Key {
   private signature: number;
-
   constructor() {
     this.signature = Math.random();
   }
 
-  getSignature() {
+  getSignature(): number {
     return this.signature;
   }
 }
 
 // Створюємо клас Person
+
 class Person {
-  constructor(private key: Key) {
-    this.key = key;
-  }
+  constructor(private key: Key) {}
 
   getKey(): Key {
     return this.key;
@@ -38,36 +36,35 @@ class Person {
 
 // Створюємо клас House
 abstract class House {
-  protected door: boolean = false;
-  protected tenants: Person[] = [];
-
+  protected door = false;
+  private tenants: Person[] = [];
   constructor(protected key: Key) {}
 
-  public comeIn(person: Person): void {
+  comeIn(person: Person): void {
     if (!this.door) {
-      throw new Error("Door is close");
+      throw new Error("Door is closed");
     }
-
     this.tenants.push(person);
   }
 
   abstract openDoor(key: Key): boolean;
 }
 
+// Створюємо клас MyHouse
+
 class MyHouse extends House {
   openDoor(key: Key) {
     if (key.getSignature() !== this.key.getSignature()) {
-      throw new Error("It's another key");
+      throw new Error("It different key!");
     }
-
     return (this.door = true);
   }
 }
 
-// Виклик методів
 const key = new Key();
 
 const house = new MyHouse(key);
+
 const person = new Person(key);
 
 house.openDoor(person.getKey());
