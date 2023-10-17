@@ -42,22 +42,22 @@ abstract class House {
 
   comeIn(person: Person): void {
     if (!this.door) {
-      throw new Error("Door is closed");
+      console.log("Door is closed");
     }
     this.tenants.push(person);
   }
 
-  abstract openDoor(key: Key): boolean;
+  abstract openDoor(key: Key): void;
 }
 
 // Створюємо клас MyHouse
 
 class MyHouse extends House {
-  openDoor(key: Key) {
+  openDoor(key: Key): void {
     if (key.getSignature() !== this.key.getSignature()) {
-      throw new Error("It different key!");
+      console.log("It different key!");
     }
-    return (this.door = true);
+    this.door = true;
   }
 }
 
